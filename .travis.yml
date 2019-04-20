@@ -3,7 +3,7 @@ sudo: required
 services:
   - docker build -t salah/react-test -f ./client/Dockerfile.dev .
 
-defore_instsll:
+before_instsll:
   - docker run salah/react-test npm test -- --cover
 
 after_success:
