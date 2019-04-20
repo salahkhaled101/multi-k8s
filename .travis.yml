@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker build -t salah/react-test -f ./client/Dockerfile.dev .
+
+defore_instsll:
+  - docker run salah/react-test npm test -- --cover
+
+after_success:
+  - docker build -t salahkhaled101/multi-client ./client
+  - docker build -t salahkhaled101/multi-nginx ./nginx
+  - docker build -t salahkhaled101/multi-server ./server
+  - docker build -t salahkhaled101/multi-worker ./worker
+
+  # log in the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Take those images and push them to docker hub
+  - docker push salahkhaled101/multi-client
+  - docker push salahkhaled101/multi-nginx
+  - docker push salahkhaled101/multi-server
+  - docker push salahkhaled101/multi-worker
+ 
